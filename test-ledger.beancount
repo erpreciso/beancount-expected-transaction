@@ -1,0 +1,38 @@
+;;; -*- mode: beancount; coding: utf-8 -*-
+
+
+option "operating_currency" "EUR"
+1900-01-01 custom "fava-option" "collapse-pattern" ".*:.*"
+plugin "beancount.plugins.auto_accounts"
+option "name_assets" "A"
+option "name_liabilities" "L"
+option "name_equity" "Eq"
+option "name_income" "I"
+option "name_expenses" "E"
+
+option "insert_pythonpath" "True"
+plugin "expect"
+
+
+
+2024-01-01 * "Beverages" "Weekly provision of Soft drinks"
+  expected: "True"
+  frequency: "weekly"
+  duration_in_years: 1
+  until: "2024-03-01"
+  E:Drinks                                       250 EUR
+  L:Beverages
+
+2024-01-15 * "Provider" "Monthly payment"
+  expected: "True"
+  frequency: "monthly"
+  duration_in_years: 1
+  until: "2024-03-20"
+  L:Beverages                                    900 EUR
+  A:Bank:Credit
+
+2024-01-27 * "Bank" "Credit reconcile"
+  A:Bank:Credit                                 1000.00 EUR
+  A:Bank:Checking
+
+
