@@ -1,9 +1,9 @@
 * How To
 ** Install
 
-Put the module somewhere on ~PYTHONPATH~
+Put ~expect.py~ somewhere on ~PYTHONPATH~, and put the following line
+in your ledger.
 
-Put the following line in your ledger.
 #+begin_src python
   plugin "expect"  
 #+end_src
@@ -32,6 +32,10 @@ See [[https://dateutil.readthedocs.io/en/stable/rrule.html#dateutil.rrule.rrule]
   expected occurrences. The two meta MUST NOT be given both in the
   same entry
   (https://dateutil.readthedocs.io/en/stable/rrule.html#dateutil.rrule.rrule)
+
+
+Note that the transaction containing metadata cannot be de-duplicated;
+it must be an actual transaction.
 
 * Tutorial (TODO)
 * References (TODO)
