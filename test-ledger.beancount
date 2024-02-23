@@ -1,6 +1,5 @@
 ;;; -*- mode: beancount; coding: utf-8 -*-
 
-
 option "operating_currency" "EUR"
 1900-01-01 custom "fava-option" "collapse-pattern" ".*:.*"
 plugin "beancount.plugins.auto_accounts"
@@ -14,25 +13,43 @@ option "insert_pythonpath" "True"
 plugin "expect"
 
 
-
-2024-01-01 * "Beverages" "Weekly provision of Soft drinks"
+2024-01-01 * "Beverages" "Recurrent weekly provision of soft drinks"
   expected: "True"
   frequency: "weekly"
   duration_in_years: 1
-  until: "2024-03-01"
   E:Drinks                                       250 EUR
   L:Beverages
 
-2024-01-15 * "Provider" "Monthly payment"
-  expected: "True"
-  frequency: "monthly"
-  duration_in_years: 1
-  until: "2024-03-20"
+2024-01-15 * "Provider" "First payment"
+  L:Beverages                                    500 EUR
+  A:Bank:Credit
+
+2024-02-15 * "Provider" "Second payment"
   L:Beverages                                    900 EUR
   A:Bank:Credit
 
+2024-03-15 * "Provider" "Monthly payment"
+  expected: "True"
+  frequency: "monthly"
+  duration_in_years: 1
+  L:Beverages                                    1050 EUR
+  A:Bank:Credit
+
 2024-01-27 * "Bank" "Credit reconcile"
+  expected: "True"
+  frequency: "monthly"
+  duration_in_years: 1
   A:Bank:Credit                                 1000.00 EUR
   A:Bank:Checking
 
+2024-01-08 * "Beverages" "Second provision of Soft drinks"
+  E:Drinks                                       300 EUR
+  L:Beverages
 
+2024-01-15 * "Beverages" "Third provision of Soft drinks"
+  E:Drinks                                       200 EUR
+  L:Beverages
+
+2024-01-22 * "Beverages" "Fourth provision of Soft drinks"
+  E:Drinks                                       400 EUR
+  L:Beverages
