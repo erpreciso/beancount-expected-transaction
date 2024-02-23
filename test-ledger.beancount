@@ -9,7 +9,7 @@ option "name_equity" "Eq"
 option "name_income" "I"
 option "name_expenses" "E"
 
-plugin "expect"
+plugin "beancount-expected-transaction.expect"
 
 
 2024-01-01 * "Beverages" "Recurrent weekly provision of soft drinks"
