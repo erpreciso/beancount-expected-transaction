@@ -29,18 +29,6 @@ def _is_origin(entry):
     return v
 
 
-def tag_entry(tag: str, entry):
-    """Add tag to an entry.
-
-    :param tag: Tag to be added
-    :param entry: Entry
-    :returns: 
-
-    """
-    new_tagset = entry.tags.union(set([tag]))
-    return entry._replace(tags=new_tagset)
-
-
 def get_expected_dates(entry):
     """Get expected dates based on entry parameters.
 
@@ -126,7 +114,20 @@ def _is_overtrown_by_real_entry(exp_entry,
             if real_entry.date >= exp_entry.date - margin_days:
                 return True
     return False
+
+
+def create_expected(entry, exp_date):
+    # create entry with expected date
+    new_entry = entry._replace(date=exp_date)
+    # add tag
+    new_tagset = new_entry.tags.union(set(['expected']))
+    expected_entry = new_entry._replace(tags=new_tagset)
+    # remove metadata
+    new_meta = {'filename': new_entry.meta.get('filename'),
+                'lineno': new_entry.meta.get('lineno')}
+    expected_entry = expected_entry._replace(meta=new_meta)
     # pdb.set_trace()
+    return expected_entry
 
 
 def expect(entries, options_map, config_string="{}"):
@@ -149,9 +150,7 @@ def expect(entries, options_map, config_string="{}"):
         # iterate the expected dates
         for expected_date in expectations:
             # copy the entry, using the expected date and tag with 'expected'
-            # TODO copy without medatdata
-            expected_entry = txn._replace(date=expected_date)
-            expected_entry = tag_entry('expected', expected_entry)
+            expected_entry = create_expected(txn, expected_date)
             # check if the new entry is a duplicate of an existing one
             # e.g., there is real transaction overwriting the expected
             if _is_overtrown_by_real_entry(expected_entry, txns):
