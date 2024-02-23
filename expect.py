@@ -96,7 +96,6 @@ def _have_same_postings_accounts(entries: list) -> bool:
     :returns: Boolean
 
     """
-    
     postings = []
     for e in entries:
         postings.append(set([p.account for p in e.postings]))
@@ -162,3 +161,5 @@ def expect(entries, options_map, config_string="{}"):
     return entries + forecasted, errors
 
 # TODO if until is approaching, error that forecasted are finishing
+# TODO implement more complex recurrences based on
+# https://dateutil.readthedocs.io/en/stable/rrule.html#rrule-examples

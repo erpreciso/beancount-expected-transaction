@@ -1,0 +1,38 @@
+* How To
+** Install
+
+Put the module somewhere on ~PYTHONPATH~
+
+Put the following line in your ledger.
+#+begin_src python
+  plugin "expect"  
+#+end_src
+
+** Setup expectations
+
+Add metadata to the transaction you expect to repeat.
+
+#+begin_src python
+  2024-01-01 * "Beverages" "Recurrent weekly provision of soft drinks"
+    expected: "True"
+    frequency: "weekly"
+    duration_in_years: 1
+    E:Drinks                                       250 EUR
+    L:Beverages
+#+end_src
+
+Metadata should resemble the ~dateutil.rrule~ parameters.
+See [[https://dateutil.readthedocs.io/en/stable/rrule.html#dateutil.rrule.rrule][documentation]].
+
+- frequency :: must be in the RFC 5545 names
+  (https://datatracker.ietf.org/doc/html/rfc5545), otherwise default
+  to monthly
+- interval :: interval between expectations
+- until OR count OR duration_in_years :: either end date, or number of
+  expected occurrences. The two meta MUST NOT be given both in the
+  same entry
+  (https://dateutil.readthedocs.io/en/stable/rrule.html#dateutil.rrule.rrule)
+
+* Tutorial (TODO)
+* References (TODO)
+* Explanation (TODO)

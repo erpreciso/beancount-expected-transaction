@@ -9,7 +9,6 @@ option "name_equity" "Eq"
 option "name_income" "I"
 option "name_expenses" "E"
 
-option "insert_pythonpath" "True"
 plugin "expect"
 
 
