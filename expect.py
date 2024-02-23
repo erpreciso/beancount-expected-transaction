@@ -159,7 +159,3 @@ def expect(entries, options_map, config_string="{}"):
             else:
                 forecasted.append(expected_entry)
     return entries + forecasted, errors
-
-# TODO if until is approaching, error that forecasted are finishing
-# TODO implement more complex recurrences based on
-# https://dateutil.readthedocs.io/en/stable/rrule.html#rrule-examples

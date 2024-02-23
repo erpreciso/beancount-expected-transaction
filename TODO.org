@@ -1,0 +1,5 @@
+* Additional features
+- [ ] if end of expectations is approaching, add an error that forecasted are finishing
+- [ ] implement more complex recurrences based on https://dateutil.readthedocs.io/en/stable/rrule.html#rrule-examples
+* Logic
+- [ ] Similar transactions must be within a certain range to be considered duplicates
