@@ -32,10 +32,19 @@ See [[https://dateutil.readthedocs.io/en/stable/rrule.html#dateutil.rrule.rrule]
   expected occurrences. The two meta MUST NOT be given both in the
   same entry
   (https://dateutil.readthedocs.io/en/stable/rrule.html#dateutil.rrule.rrule)
+- amount (optional) :: the amount of the transaction, replacing the one
+  in the posting. Mainly used if the origin of the recurrent
+  transaction is an actual transaction, but the expectations might
+  vary in future expected transactions, therefore with a different
+  amount.
 
+** Constraints
 
-Note that the transaction containing metadata cannot be de-duplicated;
-it must be an actual transaction.
+- the transaction containing metadata cannot be de-duplicated; it must
+  be an actual transaction.
+- the transaction must have only two postings, with only one
+  containing an amount
+- the `amount' metadata will replace the posting with the amount
 
 * Tutorial (TODO)
 * References (TODO)

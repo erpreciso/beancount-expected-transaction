@@ -1,8 +1,11 @@
 import pdb
+import re
 from beancount.core import data
 from dateutil.rrule import rrule, FREQNAMES
 import datetime as dt
 from itertools import groupby
+from beancount.core.number import Decimal
+from beancount.core.amount import Amount
 
 __plugins__ = ['expect']
 
@@ -119,15 +122,33 @@ def _is_overtrown_by_real_entry(exp_entry,
 def create_expected(entry, exp_date):
     # create entry with expected date
     new_entry = entry._replace(date=exp_date)
+    # use amount in meta, if available
+    if new_entry.meta.get('amount'):
+        amount_str = new_entry.meta.get('amount')
+        val = Decimal(re.search(r"\d+[\.\d+]*", amount_str).group(0))
+        new_amount = Amount(val, 'EUR')
+        new_other_amount = Amount(val * -1, 'EUR')
+        # TODO replace above with operating curr
+        new_postings = []
+        assert len(new_entry.postings) == 2
+        for posting in new_entry.postings:
+            # check which posting is same positive or negative as new
+            if posting.units.number * new_amount.number > 0:
+                # replace the same sign one with new amount
+                new_postings.append(posting._replace(units=new_amount))
+            else:
+                # remove units from the other posting
+                new_postings.append(posting._replace(units=new_other_amount))
+        new_entry = new_entry._replace(postings=new_postings)
+        # pdb.set_trace()
     # add tag
     new_tagset = new_entry.tags.union(set(['expected']))
-    expected_entry = new_entry._replace(tags=new_tagset)
+    new_entry = new_entry._replace(tags=new_tagset)
     # remove metadata
     new_meta = {'filename': new_entry.meta.get('filename'),
                 'lineno': new_entry.meta.get('lineno')}
-    expected_entry = expected_entry._replace(meta=new_meta)
-    # pdb.set_trace()
-    return expected_entry
+    new_entry = new_entry._replace(meta=new_meta)
+    return new_entry
 
 
 def expect(entries, options_map, config_string="{}"):

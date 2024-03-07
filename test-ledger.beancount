@@ -16,6 +16,7 @@ plugin "beancount-expected-transaction.expect"
   expected: "True"
   frequency: "weekly"
   duration_in_years: 1
+  amount: "300"
   E:Drinks                                       250 EUR
   L:Beverages
 
