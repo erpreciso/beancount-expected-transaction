@@ -11,9 +11,9 @@ option "name_expenses" "E"
 
 plugin "beancount-expected-transaction.expect"
 
-;;; soft drinks provisions
+*** soft drinks provisions
 
-;;;; recurrent transaction origin
+**** recurrent transaction origin
 2024-01-01 * "Beverages" "Recurrent weekly provision of soft drinks"
   expected: "True"
   frequency: "weekly"
@@ -22,7 +22,7 @@ plugin "beancount-expected-transaction.expect"
   E:Drinks                                       250 EUR
   L:Beverages
 
-;;;; actual transactions
+**** actual transactions
 
 2024-01-01 * "Beverages" "First provision of Soft drinks"
   E:Drinks                                       300 EUR
@@ -40,9 +40,9 @@ plugin "beancount-expected-transaction.expect"
   E:Drinks                                       400 EUR
   L:Beverages
 
-;;; soft drinks payments
+*** soft drinks payments
 
-;;;; recurrent transaction origin
+**** recurrent transaction origin
 
 2024-03-15 * "Provider" "Monthly payment"
   expected: "True"
@@ -51,7 +51,7 @@ plugin "beancount-expected-transaction.expect"
   L:Beverages                                    1050 EUR
   A:Bank:Credit
 
-;;;; actual payments
+**** actual payments
 
 2024-01-15 * "Provider" "First payment"
   L:Beverages                                    500 EUR
@@ -61,7 +61,7 @@ plugin "beancount-expected-transaction.expect"
   L:Beverages                                    900 EUR
   A:Bank:Credit
 
-;;; credit card
+*** credit card
 
 2024-01-27 * "Bank" "Credit reconcile"
   expected: "True"
