@@ -3,10 +3,12 @@
   forecasted are finishing
 - [ ] implement more complex recurrences based on
   https://dateutil.readthedocs.io/en/stable/rrule.html#rrule-examples
+- [ ] ensure recurrences are on business days
 * Logic
-- [ ] Similar transactions must be within a certain range to be
+- [ ] in `create_expected', replace hardcoded EUR with operating curr
+- [X] Similar transactions must be within a certain range to be
   considered duplicates
-- [ ] Create new transactions without the metadata
-- [ ] Create new transactions using amount in metadata, and amount in
+- [X] Create new transactions using amount in metadata, and amount in
   postings = 0, to allow duplicate the original transaction versus an
   actual one
+- [X] Create new transactions without the metadata

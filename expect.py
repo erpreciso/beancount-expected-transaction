@@ -64,7 +64,6 @@ def get_expected_dates(entry):
                                               count=count,
                                               interval=interval,
                                               until=until)]
-    # TODO ensure recurrences are on business days
     return expected_dates
 
 
@@ -128,7 +127,6 @@ def create_expected(entry, exp_date):
         val = Decimal(re.search(r"\d+[\.\d+]*", amount_str).group(0))
         new_amount = Amount(val, 'EUR')
         new_other_amount = Amount(val * -1, 'EUR')
-        # TODO replace above with operating curr
         new_postings = []
         assert len(new_entry.postings) == 2
         for posting in new_entry.postings:
