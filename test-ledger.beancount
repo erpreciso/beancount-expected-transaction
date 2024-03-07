@@ -11,36 +11,22 @@ option "name_expenses" "E"
 
 plugin "beancount-expected-transaction.expect"
 
+;;; soft drinks provisions
 
+;;;; recurrent transaction origin
 2024-01-01 * "Beverages" "Recurrent weekly provision of soft drinks"
   expected: "True"
   frequency: "weekly"
-  duration_in_years: 1
+  until: "2024-05-01"
   amount: "300"
   E:Drinks                                       250 EUR
   L:Beverages
 
-2024-01-15 * "Provider" "First payment"
-  L:Beverages                                    500 EUR
-  A:Bank:Credit
+;;;; actual transactions
 
-2024-02-15 * "Provider" "Second payment"
-  L:Beverages                                    900 EUR
-  A:Bank:Credit
-
-2024-03-15 * "Provider" "Monthly payment"
-  expected: "True"
-  frequency: "monthly"
-  duration_in_years: 1
-  L:Beverages                                    1050 EUR
-  A:Bank:Credit
-
-2024-01-27 * "Bank" "Credit reconcile"
-  expected: "True"
-  frequency: "monthly"
-  duration_in_years: 1
-  A:Bank:Credit                                 1000.00 EUR
-  A:Bank:Checking
+2024-01-01 * "Beverages" "First provision of Soft drinks"
+  E:Drinks                                       300 EUR
+  L:Beverages
 
 2024-01-08 * "Beverages" "Second provision of Soft drinks"
   E:Drinks                                       300 EUR
@@ -53,3 +39,33 @@ plugin "beancount-expected-transaction.expect"
 2024-01-22 * "Beverages" "Fourth provision of Soft drinks"
   E:Drinks                                       400 EUR
   L:Beverages
+
+;;; soft drinks payments
+
+;;;; recurrent transaction origin
+
+2024-03-15 * "Provider" "Monthly payment"
+  expected: "True"
+  frequency: "monthly"
+  until: "2024-05-01"
+  L:Beverages                                    1050 EUR
+  A:Bank:Credit
+
+;;;; actual payments
+
+2024-01-15 * "Provider" "First payment"
+  L:Beverages                                    500 EUR
+  A:Bank:Credit
+
+2024-02-15 * "Provider" "Second payment"
+  L:Beverages                                    900 EUR
+  A:Bank:Credit
+
+;;; credit card
+
+2024-01-27 * "Bank" "Credit reconcile"
+  expected: "True"
+  frequency: "monthly"
+  until: "2024-05-01"
+  A:Bank:Credit                              1000.00 EUR
+  A:Bank:Checking

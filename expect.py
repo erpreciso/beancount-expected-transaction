@@ -162,10 +162,25 @@ def expect(entries, options_map, config_string="{}"):
     """
     errors = []
     forecasted = []
-    # process, from now on, only data.Transactions
+    # save all non- ~data.Transactions~
+    non_txns = [e for e in entries if not isinstance(e, data.Transaction)]
+    # process, from now on, only ~data.Transactions~
     txns = [e for e in entries if isinstance(e, data.Transaction)]
-    # iterate transactions that generate expectations
-    for txn in [txn for txn in txns if _is_origin(txn)]:
+    # save all txns that are not origins
+    non_origin_txns = [txn for txn in txns if not _is_origin(txn)]
+    # iterate transactions that generate expectations ("origins")
+    origin_txns = [txn for txn in txns if _is_origin(txn)]
+    # list for the origins with the amount replaced by meta, if any
+    processed_origin_txns = []
+    for txn in origin_txns:
+        # replace origin txns with ones containing the amount in meta, if any
+        processed_origin_txn = create_expected(txn, txn.date)
+        if _is_overtrown_by_real_entry(processed_origin_txn, txns):
+            # do nothing, since also the original txn is overtrown
+            pass
+        else:
+            # append the processed origin to the txn list
+            processed_origin_txns.append(processed_origin_txn)
         # get dates for expected transactions
         expectations = get_expected_dates(txn)
         # iterate the expected dates
@@ -178,4 +193,6 @@ def expect(entries, options_map, config_string="{}"):
                 continue
             else:
                 forecasted.append(expected_entry)
-    return entries + forecasted, errors
+    processed_entries = non_txns + processed_origin_txns + \
+        non_origin_txns + forecasted
+    return processed_entries, errors
