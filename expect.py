@@ -4,8 +4,9 @@ from beancount.core import data
 from dateutil.rrule import rrule, FREQNAMES
 import datetime as dt
 from itertools import groupby
-from beancount.core.number import Decimal
+from beancount.core.number import D
 from beancount.core.amount import Amount
+from decimal import ROUND_HALF_UP
 
 __plugins__ = ['expect']
 
@@ -124,9 +125,11 @@ def create_expected(entry, exp_date):
     # use amount in meta, if available
     if new_entry.meta.get('amount'):
         amount_str = new_entry.meta.get('amount')
-        val = Decimal(re.search(r"\d+[\.\d+]*", amount_str).group(0))
-        new_amount = Amount(val, 'EUR')
-        new_other_amount = Amount(val * -1, 'EUR')
+        val = D(re.search(r"\d+[\.\d+]*", amount_str).group(0))
+        # round using Decimal method `quantize'
+        rounded_val = val.quantize(D('.01'), rounding=ROUND_HALF_UP)
+        new_amount = Amount(rounded_val, 'EUR')
+        new_other_amount = Amount(rounded_val * -1, 'EUR')
         new_postings = []
         assert len(new_entry.postings) == 2
         for posting in new_entry.postings:
